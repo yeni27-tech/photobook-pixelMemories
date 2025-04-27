@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PixelMemories - Your PhotoBook Creator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Poppins:wght@400;500;600;700&family=Indie+Flower&display=swap');
+
+        :root {
+            --primary-color: #FF6B6B;
+            --secondary-color: #4ECDC4;
+            --accent-color: #FFD166;
+            --light-color: #F9F7F7;
+            --dark-color: #3D3D3D;
+            --pastel-pink: #FFB6C1;
+            --pastel-blue: #AEC6CF;
+            --pastel-green: #B5EAD7;
+            --pastel-yellow: #FFDAC1;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--light-color);
+            overflow-x: hidden;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .navbar {
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            padding: 15px 0;
+            transition: all 0.5s ease;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.8rem;
+            color: white !important;
+            letter-spacing: 1px;
+            position: relative;
+        }
+
+        .navbar-brand::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: white;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .navbar-brand:hover::after {
+            transform: scaleX(1);
+        }
+
+        .nav-link {
+            color: white !important;
+            font-weight: 600;
+            position: relative;
+            margin: 0 10px;
+        }
+
+        .nav-link:hover {
+            transform: translateY(-3px);
+        }
+
+        .navbar .btn-primary {
+            background-color: white;
+            color: var(--primary-color);
+            border: none;
+            border-radius: 20px;
+            padding: 8px 20px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .navbar .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                url('https://via.placeholder.com/1920x1080') center/cover no-repeat;
+            height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            opacity: 0.7;
+            z-index: -1;
+        }
+
+        .hero-content {
+            z-index: 1;
+        }
+
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .hero-section h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-section .lead {
+            font-size: 1.4rem;
+            margin-bottom: 40px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-btn {
+            background-color: var(--accent-color);
+            color: var(--dark-color);
+            border: none;
+            border-radius: 30px;
+            padding: 12px 35px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 20px rgba(0, 0, 0, 0.2);
+            background-color: white;
+            color: var(--primary-color);
+        }
+
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            animation: bubble-float 8s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes bubble-float {
+            0% {
+                transform: translateY(100%) scale(0);
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-100vh) scale(2);
+                opacity: 0;
+            }
+        }
+
+        .feature-box {
+            text-align: center;
+            padding: 40px 25px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .feature-box::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--pastel-pink) 0%, var(--pastel-blue) 100%);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .feature-box:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-box:hover::before {
+            opacity: 0.8;
+        }
+
+        .feature-box:hover .feature-icon,
+        .feature-box:hover h4,
+        .feature-box:hover p {
+            color: white;
+        }
+
+        .feature-icon {
+            font-size: 50px;
+            color: var(--primary-color);
+            margin-bottom: 25px;
+            transition: all 0.4s ease;
+        }
+
+        .feature-box h4 {
+            font-weight: 700;
+            margin-bottom: 15px;
+            transition: all 0.4s ease;
+        }
+
+        .feature-box p {
+            font-size: 1rem;
+            transition: all 0.4s ease;
+        }
+
+        .section-title {
+            position: relative;
+            font-weight: 700;
+            margin-bottom: 60px;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            width: 80px;
+            height: 4px;
+            background: var(--primary-color);
+            transform: translateX(-50%);
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .photobook-preview {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            padding: 25px;
+            margin-bottom: 30px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .photobook-preview::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+        }
+
+        .photobook-preview:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .photobook-preview img {
+            border-radius: 10px;
+            transition: all 0.4s ease;
+        }
+
+        .photobook-preview:hover img {
+            transform: scale(1.05);
+        }
+
+        .photobook-preview h5 {
+            font-weight: 700;
+            margin: 15px 0 5px;
+        }
+
+        .frame-library {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .frame-item {
+            border: 3px solid #dee2e6;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .frame-item:hover,
+        .frame-item.active {
+            border-color: var(--primary-color);
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .photo-canvas {
+            background-color: white;
+            border: 1px solid #dee2e6;
+            min-height: 500px;
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .photo-canvas:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .photo-canvas img.draggable {
+            position: absolute;
+            max-width: 200px;
+            cursor: move;
+            border-radius: 5px;
+        }
+
+        .btn {
+            border-radius: 30px;
+            padding: 8px 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: #ff5252;
+            border-color: #ff5252;
+        }
+
+        .btn-success {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+
+        .btn-success:hover {
+            background-color: #3dbeb6;
+            border-color: #3dbeb6;
+        }
+
+        .btn-info {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+
+        .btn-info:hover {
+            background-color: #ffc74c;
+            border-color: #ffc74c;
+        }
+
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background-color: white;
+            border-bottom: 2px solid #f0f0f0;
+            padding: 15px 20px;
+        }
+
+        .card-header h5 {
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .card-img-top {
+            transition: all 0.4s ease;
+        }
+
+        .card:hover .card-img-top {
+            transform: scale(1.05);
+        }
+
+        footer {
+            background: linear-gradient(to right, var(--dark-color), #2c3e50);
+            color: white;
+            padding: 60px 0 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color), var(--accent-color));
+        }
+
+        footer h5 {
+            font-weight: 700;
+            margin-bottom: 25px;
+            position: relative;
+            display: inline-block;
+        }
+
+        footer h5::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+
+        footer ul li {
+            margin-bottom: 10px;
+        }
+
+        footer a {
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        footer a:hover {
+            color: var(--accent-color) !important;
+            padding-left: 5px;
+        }
+
+        .social-icons a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-5px);
+        }
+
+        .form-range::-webkit-slider-thumb {
+            background: var(--primary-color);
+        }
+
+        .form-range::-moz-range-thumb {
+            background: var(--primary-color);
+        }
+
+        .form-range::-ms-thumb {
+            background: var(--primary-color);
+        }
+
+        .animated-element {
+            animation-duration: 1.5s;
+            animation-fill-mode: both;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes bounce-in {
+            0% {
+                transform: scale(0.3);
+                opacity: 0;
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            70% {
+                transform: scale(0.9);
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .bounce-in {
+            animation: bounce-in 1s;
+        }
+
+        @keyframes wiggle {
+
+            0%,
+            100% {
+                transform: rotate(-5deg);
+            }
+
+            50% {
+                transform: rotate(5deg);
+            }
+        }
+
+        .wiggle {
+            animation: wiggle 0.5s ease-in-out;
+        }
+
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            display: none;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary-color);
+            border-radius: 0;
+            animation: confetti-fall 3s linear forwards;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(calc(100vh + 100px)) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .card-hover-effect {
+            transition: all 0.4s ease;
+        }
+
+        .card-hover-effect:hover {
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--primary-color);
+            z-index: 9999;
+            transform: translateX(-100%);
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .polaroid {
+            background: white;
+            padding: 15px 15px 40px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            transform: rotate(0deg);
+            transition: all 0.3s ease;
+        }
+
+        .polaroid:hover {
+            transform: rotate(-3deg) scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .polaroid img {
+            width: 100%;
+            height: auto;
+        }
+
+        .polaroid p {
+            text-align: center;
+            margin-top: 10px;
+            font-family: 'Indie Flower', cursive;
+            font-size: 1.1rem;
+        }
+
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .btn-animated {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-animated:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 100%);
+            transform: skewX(-25deg);
+            transition: all 0.75s;
+        }
+
+        .btn-animated:hover:before {
+            left: 100%;
+        }
+
+        .shapes-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .shape {
+            position: absolute;
+            opacity: 0.5;
+        }
+
+        .shape-1 {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            top: 20%;
+            left: 10%;
+            animation: float-animation 7s infinite ease-in-out;
+        }
+
+        .shape-2 {
+            width: 60px;
+            height: 60px;
+            background-color: var(--secondary-color);
+            top: 60%;
+            right: 10%;
+            transform: rotate(45deg);
+            animation: float-animation 9s infinite ease-in-out;
+        }
+
+        .shape-3 {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            bottom: 20%;
+            left: 20%;
+            animation: float-animation 8s infinite ease-in-out;
+        }
+
+        @keyframes float-animation {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            25% {
+                transform: translate(20px, -15px) rotate(90deg);
+            }
+
+            50% {
+                transform: translate(0, 15px) rotate(180deg);
+            }
+
+            75% {
+                transform: translate(-20px, -15px) rotate(270deg);
+            }
+
+            100% {
+                transform: translate(0, 0) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Confetti Container -->
+    <div class="confetti-container" id="confettiContainer"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand animate__animated animate__bounceIn" href="#">PixelMemories</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active animate__animated animate__fadeInDown" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link animate__animated animate__fadeInDown" style="animation-delay: 0.1s"
+                            href="#create">Create Photobook</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link animate__animated animate__fadeInDown" style="animation-delay: 0.2s"
+                            href="#gallery">My Gallery</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link animate__animated animate__fadeInDown" style="animation-delay: 0.3s"
+                            href="#templates">Templates</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link animate__animated animate__fadeInDown" style="animation-delay: 0.4s"
+                            href="#pricing">Pricing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary ms-2 animate__animated animate__fadeInDown"
+                            style="animation-delay: 0.5s" href="#login" data-bs-toggle="modal"
+                            data-bs-target="#authModal">Login / Sign Up</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="shapes-background">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+        </div>
+
+        <!-- Bubbles -->
+        <div id="bubbles"></div>
+
+        <div class="container hero-content">
+            <img src="https://via.placeholder.com/150" alt="Logo"
+                class="mb-4 floating animate__animated animate__fadeInDown">
+            <h1 class="animate__animated animate__fadeInUp">Capture Your Memories, Forever</h1>
+            <p class="lead mb-4 animate__animated animate__fadeInUp" style="animation-delay: 0.2s">Create beautiful
+                photobooks with our easy-to-use editor. Choose from hundreds of frames and templates.</p>
+            <a href="#create" class="btn hero-btn animate__animated animate__fadeInUp btn-animated"
+                style="animation-delay: 0.4s" id="ctaButton">Start Creating Now</a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <p class="section-subtitle animate__animated animate__fadeInUp">Our Features</p>
+                <h2 class="section-title animate__animated animate__fadeInUp">Why Choose PixelMemories?</h2>
+            </div>
+            <div class="row">
+                <div class="col-md-4 fade-in-section">
+                    <div class="feature-box card-hover-effect" onmouseover="wiggle(this)">
+                        <div class="feature-icon">
+                            <i class="fas fa-images"></i>
+                        </div>
+                        <h4>Beautiful Templates</h4>
+                        <p>Choose from hundreds of professionally designed templates for any occasion.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 fade-in-section">
+                    <div class="feature-box card-hover-effect" onmouseover="wiggle(this)">
+                        <div class="feature-icon">
+                            <i class="fas fa-pencil-alt"></i>
+                        </div>
+                        <h4>Easy Editing</h4>
+                        <p>Our intuitive drag-and-drop editor makes creating photobooks simple and fun.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 fade-in-section">
+                    <div class="feature-box card-hover-effect" onmouseover="wiggle(this)">
+                        <div class="feature-icon">
+                            <i class="fas fa-print"></i>
+                        </div>
+                        <h4>Quality Printing</h4>
+                        <p>Get your photobooks printed on premium paper with high-quality printing.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Create Photobook Section -->
+    <section id="create" class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <p class="section-subtitle animate__animated animate__fadeInUp">Get Started</p>
+                <h2 class="section-title animate__animated animate__fadeInUp">Create Your Photobook</h2>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="card mb-4 bounce-in card-hover-effect">
+                        <div class="card-header">
+                            <h5 class="mb-0">Frames</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="frame-library" id="frame-library">
+                                <!-- Frames loaded dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card bounce-in card-hover-effect" style="animation-delay: 0.2s">
+                        <div class="card-header">
+                            <h5 class="mb-0">My Photos</h5>
+                        </div>
+                        <div class="card-body">
+                            <input type="file" id="photo-upload" accept="image/*" class="d-none">
+                            <button class="btn btn-outline-primary w-100 mb-3 btn-animated"
+                                onclick="$('#photo-upload').click()">
+                                <i class="fas fa-upload me-2"></i> Upload Photos
+                            </button>
+                            <div class="frame-library" id="photo-library">
+                                <!-- Photos loaded dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card bounce-in card-hover-effect" style="animation-delay: 0.4s">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Editor</h5>
+                            <div>
+                                <button class="btn btn-sm btn-outline-secondary me-2 btn-animated" onclick="undo()"
+                                    onmouseover="wiggle(this)">
+                                    <i class="fas fa-undo"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline-secondary btn-animated" onclick="redo()"
+                                    onmouseover="wiggle(this)">
+                                    <i class="fas fa-redo"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="photo-canvas" id="photo-canvas">
+                                <div class="text-center py-5 text-muted d-none" id="canvas-placeholder">
+                                    <i class="fas fa-image fa-3x mb-3"></i>
+                                    <p>Drag and drop photos or frames here</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card mb-4 bounce-in card-hover-effect" style="animation-delay: 0.6s">
+                        <div class="card-header">
+                            <h5 class="mb-0">Properties</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">Brightness</label>
+                                <input type="range" class="form-range" min="0" max="100" value="50" id="brightness">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Contrast</label>
+                                <input type="range" class="form-range" min="0" max="100" value="50" id="contrast">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Saturation</label>
+                                <input type="range" class="form-range" min="0" max="100" value="50" id="saturation">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Filter</label>
+                                <select class="form-select" id="filter">
+                                    <option value="none">None</option>
+                                    <option value="vintage">Vintage</option>
+                                    <option value="black_white">Black & White</option>
+                                    <option value="sepia">Sepia</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card bounce-in card-hover-effect" style="animation-delay: 0.8s">
+                        <div class="card-header">
+                            <h5 class="mb-0">Actions</h5>
+                        </div>
+                        <div class="card-body">
+                            <button class="btn btn-primary w-100 mb-2 btn-animated" onclick="saveProject()">
+                                <i class="fas fa-save me-2"></i> Save Project
+                            </button>
+                            <button class="btn btn-success w-100 mb-2 btn-animated" onclick="downloadPhotobook()">
+                                <i class="fas fa-download me-2"></i> Download
+                            </button>
+                            <button class="btn btn-info w-100 text-dark btn-animated" onclick="printPhotobook()">
+                                <i class="fas fa-print me-2"></i> Print
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- My Gallery Section -->
+    <section id="gallery" class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <p class="section-subtitle animate__animated animate__fadeInUp">Your Memories</p>
+                <h2 class="section-title animate__animated animate__fadeInUp">My PhotoBook Gallery</h2>
+            </div>
+            <div class="row" id="gallery-container">
+                <div class="col-md-4 fade-in-section">
+                    <div class="photobook-preview polaroid card-hover-effect">
+                        <img src="https://via.placeholder.com/300x200" class="img-fluid mb-3" alt="Photobook 1">
+                        <h5>Summer Vacation 2023</h5>
+                        <p class="text-muted small">Created on: April 15, 2023</p>
+                        <div class="d-flex justify-content-between">
+                            <button class="btn btn-sm btn-outline-primary btn-animated">Edit</button>
+                            <button class="btn btn-sm btn-outline-danger btn-animated">Delete</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 fade-in-section">
+                    <div class="photobook-preview polaroid card-hover-effect">
+                        <img src="https://via.placeholder.com/300x200" class="img-fluid mb-3" alt="Photobook 2">
+                        <h5>Wedding Anniversary</h5>
+                        <p class="text-muted small">Created on: March 10, 2023</p>
+                        <div class="d-flex justify-content-between">
+                            <button class="btn btn-sm btn-outline-primary btn-animated">Edit</button>
+                            <button class="btn btn-sm btn-outline-danger btn-animated">Delete</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 fade-in-section">
+                    <div class="photobook-preview polaroid card-hover-effect">
+                        <img src="https://via.placeholder.com/300x200" class="img-fluid mb-3" alt="Photobook 3">
+                        <h5>Birthday Memories</h5>
+                        <p class="text-muted small">Created on: January 23, 2023</p>
+                        <div class="d-flex justify-content-between">
+                            <button class="btn btn-sm btn-outline-primary btn-animated">Edit</button>
+                            <button class="btn btn-sm btn-outline-danger btn-animated">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Templates Section -->
+    <section id="templates" class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <p class="section-subtitle animate__animated animate__fadeInUp">Choose Your Style</p>
+                <h2 class="section-title animate__animated animate__fadeInUp">Browse Templates</h2>
+            </div>
+            <div class="row">
+                <div class="col-md-3 fade-in-section">
+                    <div class="card mb-4 card-hover-effect">
+                        <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Template 1">
+                        <div class="card-body">
+                            <h5 class="card-title">Wedding</h5>
+                            <p class="card-text">Perfect for wedding albums and engagement photos.</p>
+                            <button class="btn btn-sm btn-primary btn-animated">Use Template</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 fade-in-section">
+                    <div class="card mb-4 card-hover-effect">
+                        <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Template 2">
+                        <div class="card-body">
+                            <h5 class="card-title">Travel</h5>
+                            <p class="card-text">Great for vacation memories and adventures.</p>
+                            <button class="btn btn-sm btn-primary btn-animated">Use Template</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 fade-in-section">
+                    <div class="card mb-4 card-hover-effect">
+                        <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Template 3">
+                        <div class="card-body">
+                            <h5 class="card-title">Baby</h5>
+                            <p class="card-text">Celebrate new arrivals and milestones.</p>
+                            <button class="btn btn-sm btn-primary btn-animated">Use Template</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 fade-in-section">
+                    <div class="card mb-4 card-hover-effect">
+                        <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Template 4">
+                        <div class="card-body">
+                            <h5 class="card-title">Graduation</h5>
+                            <p class="card-text">Commemorate academic achievements.</p>
+                            <button class="btn btn-sm btn-primary btn-animated">Use Template</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Auth Modal -->
+    <div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content"
+                style="border-radius: 15px; background: linear-gradient(135deg, var(--pastel-pink), var(--pastel-blue));">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title" id="authModalLabel">Login / Sign Up</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <ul class="nav nav-tabs" id="authTabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="login-tab" data-bs-toggle="tab" href="#login"
+                                role="tab">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="signup-tab" data-bs-toggle="tab" href="#signup" role="tab">Sign
+                                Up</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content mt-3">
+                        <div class="tab-pane fade show active" id="login" role="tabpanel">
+                            <form id="login-form">
+                                <div class="mb-3">
+                                    <label for="login-email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="login-email" required
+                                        style="border-radius: 10px;">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="login-password" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="login-password" required
+                                        style="border-radius: 10px;">
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100 btn-animated">Login</button>
+                            </form>
+                        </div>
+                        <div class="tab-pane fade" id="signup" role="tabpanel">
+                            <form id="signup-form">
+                                <div class="mb-3">
+                                    <label for="signup-username" class="form-label">Username</label>
+                                    <input type="text" class="form-control" id="signup-username" required
+                                        style="border-radius: 10px;">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="signup-email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="signup-email" required
+                                        style="border-radius: 10px;">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="signup-password" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="signup-password" required
+                                        style="border-radius: 10px;">
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100 btn-animated">Sign Up</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 fade-in-section">
+                    <h5 class="animate__animated animate__fadeInUp">PixelMemories</h5>
+                    <p class="animate__animated animate__fadeInUp" style="animation-delay: 0.2s">Creating beautiful
+                        photobooks since 2023. We help you preserve your precious memories.</p>
+                </div>
+                <div class="col-md-4 fade-in-section">
+                    <h5 class="animate__animated animate__fadeInUp">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white animate__animated animate__fadeInUp"
+                                style="animation-delay: 0.2s">Home</a></li>
+                        <li><a href="#create" class="text-white animate__animated animate__fadeInUp"
+                                style="animation-delay: 0.3s">Create Photobook</a></li>
+                        <li><a href="#gallery" class="text-white animate__animated animate__fadeInUp"
+                                style="animation-delay: 0.4s">My Gallery</a></li>
+                        <li><a href="#templates" class="text-white animate__animated animate__fadeInUp"
+                                style="animation-delay: 0.5s">Templates</a></li>
+                        <li><a href="#pricing" class="text-white animate__animated animate__fadeInUp"
+                                style="animation-delay: 0.6s">Pricing</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 fade-in-section">
+                    <h5 class="animate__animated animate__fadeInUp">Contact Us</h5>
+                    <p class="animate__animated animate__fadeInUp" style="animation-delay: 0.2s">Email:
+                        info@pixelmemories.com</p>
+                    <p class="animate__animated animate__fadeInUp" style="animation-delay: 0.3s">Phone: (123) 456-7890
+                    </p>
+                    <div class="social-icons">
+                        <a href="#" class="text-white animate__animated animate__fadeInUp"
+                            style="animation-delay: 0.4s"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white animate__animated animate__fadeInUp"
+                            style="animation-delay: 0.5s"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white animate__animated animate__fadeInUp"
+                            style="animation-delay: 0.6s"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white animate__animated animate__fadeInUp"
+                            style="animation-delay: 0.7s"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4 bg-light">
+            <div class="text-center">
+                <p class="mb-0 animate__animated animate__fadeInUp">© 2023 PixelMemories. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+    <script>
+        // Confetti Animation
+        function triggerConfetti() {
+            const confettiContainer = document.getElementById('confettiContainer');
+            confettiContainer.style.display = 'block';
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = ['var(--primary-color)', 'var(--secondary-color)', 'var(--accent-color)'][Math.floor(Math.random() * 3)];
+                confetti.style.animationDelay = Math.random() * 2 + 's';
+                confettiContainer.appendChild(confetti);
+            }
+            setTimeout(() => {
+                confettiContainer.innerHTML = '';
+                confettiContainer.style.display = 'none';
+            }, 3000);
+        }
+
+        // Bubbles Animation
+        function createBubbles() {
+            const bubblesContainer = document.getElementById('bubbles');
+            for (let i = 0; i < 20; i++) {
+                const bubble = document.createElement('div');
+                bubble.className = 'bubble';
+                bubble.style.width = Math.random() * 50 + 20 + 'px';
+                bubble.style.height = bubble.style.width;
+                bubble.style.left = Math.random() * 100 + 'vw';
+                bubble.style.animationDelay = Math.random() * 5 + 's';
+                bubblesContainer.appendChild(bubble);
+            }
+        }
+
+        // Fade-in Section Animation
+        function handleScroll() {
+            document.querySelectorAll('.fade-in-section').forEach(section => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top <= window.innerHeight * 0.8) {
+                    section.classList.add('is-visible');
+                }
+            });
+        }
+
+        // Animation Triggers
+        function wiggle(element) {
+            element.classList.add('wiggle');
+            setTimeout(() => element.classList.remove('wiggle'), 500);
+        }
+
+        function pulse(element) {
+            element.classList.add('pulse');
+            setTimeout(() => element.classList.remove('pulse'), 2000);
+        }
+
+        // Photobook Editor Logic
+        let currentPhotobookId = null;
+        let history = [];
+        let historyIndex = -1;
+
+        $(document).ready(function () {
+            createBubbles();
+            loadFrames();
+            loadGallery();
+            handleScroll();
+            window.addEventListener('scroll', handleScroll);
+
+            $('#photo-upload').on('change', uploadPhoto);
+            $('#brightness, #contrast, #saturation').on('change', applyFilter);
+            $('#filter').on('change', applyFilter);
+            $('#ctaButton').on('click', triggerConfetti);
+
+            // Drag and drop
+            interact('.photo-canvas').dropzone({
+                accept: '.frame-item',
+                ondrop: function (event) {
+                    const imgSrc = event.relatedTarget.src;
+                    const photoId = event.relatedTarget.dataset.photoId;
+                    addPhotoToCanvas(imgSrc, photoId);
+                }
+            });
+
+            interact('.draggable').draggable({
+                listeners: {
+                    move: function (event) {
+                        const target = event.target;
+                        const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+                        const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+                        target.style.transform = `translate(${x}px, ${y}px)`;
+                        target.setAttribute('data-x', x);
+                        target.setAttribute('data-y', y);
+                    }
+                }
+            });
+
+            // Login/Signup
+            $('#login-form').submit(function (e) {
+                e.preventDefault();
+                $.post('api.php?action=login', {
+                    email: $('#login-email').val(),
+                    password: $('#login-password').val()
+                }, function (response) {
+                    if (response.success) {
+                        $('#authModal').modal('hide');
+                        loadGallery();
+                        triggerConfetti();
+                    } else {
+                        alert(response.error);
+                    }
+                });
+            });
+
+            $('#signup-form').submit(function (e) {
+                e.preventDefault();
+                $.post('api.php?action=register', {
+                    username: $('#signup-username').val(),
+                    email: $('#signup-email').val(),
+                    password: $('#signup-password').val()
+                }, function (response) {
+                    if (response.success) {
+                        $('#authModal').modal('hide');
+                        triggerConfetti();
+                    } else {
+                        alert(response.error);
+                    }
+                });
+            });
+        });
+
+        function loadFrames() {
+            $.get('api.php?action=get_frames', function (response) {
+                if (response.success) {
+                    $('#frame-library').empty();
+                    response.frames.forEach(frame => {
+                        $('#frame-library').append(
+                            `<img src="${frame.file_path}" class="frame-item" data-frame-id="${frame.id}" alt="${frame.name}" style="width: 60px;" onmouseover="pulse(this)">`
+                        );
+                    });
+                }
+            });
+        }
+
+        function loadGallery() {
+            $.get('api.php?action=get_photobooks', function (response) {
+                if (response.success) {
+                    $('#gallery-container').empty();
+                    response.photobooks.forEach(book => {
+                        $('#gallery-container').append(`
+                            <div class="col-md-4 fade-in-section">
+                                <div class="photobook-preview polaroid card-hover-effect">
+                                    <img src="${book.cover_image || 'https://via.placeholder.com/300x200'}" class="img-fluid mb-3" alt="${book.title}">
+                                    <h5>${book.title}</h5>
+                                    <p class="text-muted small">Created on: ${new Date(book.created_at).toLocaleDateString()}</p>
+                                    <div class="d-flex justify-content-between">
+                                        <button class="btn btn-sm btn-outline-primary btn-animated" onclick="editPhotobook(${book.id})">Edit</button>
+                                        <button class="btn btn-sm btn-outline-danger btn-animated" onclick="deletePhotobook(${book.id})">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        `);
+                    });
+                    handleScroll();
+                }
+            });
+        }
+
+        function uploadPhoto(event) {
+            if (!currentPhotobookId) {
+                alert('Please create a photobook first');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('photo', event.target.files[0]);
+            formData.append('photobook_id', currentPhotobookId);
+
+            $.ajax({
+                url: 'api.php?action=upload_photo',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    if (response.success) {
+                        $('#photo-library').append(
+                            `<img src="${response.file_path}" class="frame-item" data-photo-id="${response.photo_id}" alt="Uploaded Photo" style="width: 60px;" onmouseover="pulse(this)">`
+                        );
+                        triggerConfetti();
+                    } else {
+                        alert(response.error);
+                    }
+                }
+            });
+        }
+
+        function addPhotoToCanvas(src, photoId) {
+            $('#canvas-placeholder').addClass('d-none');
+            const img = $(`<img src="${src}" class="draggable" data-photo-id="${photoId}">`);
+            $('#photo-canvas').append(img);
+            saveState();
+        }
+
+        function applyFilter() {
+            const selectedPhoto = $('.draggable.active');
+            if (!selectedPhoto.length) return;
+
+            const data = {
+                photo_id: selectedPhoto.data('photo-id'),
+                photo_path: selectedPhoto.attr('src'),
+                filter_type: $('#filter').val(),
+                value: $('#brightness').val() || $('#contrast').val() || $('#saturation').val()
+            };
+
+            $.post('api.php?action=apply_filter', data, function (response) {
+                if (response.success) {
+                    selectedPhoto.attr('src', response.new_path);
+                    saveState();
+                    triggerConfetti();
+                }
+            });
+        }
+
+        function saveProject() {
+            if (!currentPhotobookId) {
+                const title = prompt('Enter photobook title:');
+                if (title) {
+                    $.post('api.php?action=create_photobook', {
+                        title,
+                        description: ''
+                    }, function (response) {
+                        if (response.success) {
+                            currentPhotobookId = response.photobook_id;
+                            alert('Photobook saved!');
+                            triggerConfetti();
+                        }
+                    });
+                }
+            }
+        }
+
+        function downloadPhotobook() {
+            if (currentPhotobookId) {
+                window.location.href = `api.php?action=download_photobook&photobook_id=${currentPhotobookId}`;
+                triggerConfetti();
+            }
+        }
+
+        function printPhotobook() {
+            if (currentPhotobookId) {
+                $.get(`api.php?action=download_photobook&photobook_id=${currentPhotobookId}`, function (response) {
+                    if (response.success) {
+                        const printWindow = window.open(response.pdf_path);
+                        printWindow.print();
+                        triggerConfetti();
+                    }
+                });
+            }
+        }
+
+        function editPhotobook(id) {
+            currentPhotobookId = id;
+            $.get(`api.php?action=get_photos&photobook_id=${id}`, function (response) {
+                if (response.success) {
+                    $('#photo-canvas').empty();
+                    response.photos.forEach(photo => {
+                        addPhotoToCanvas(photo.file_path, photo.id);
+                    });
+                }
+            });
+        }
+
+        function deletePhotobook(id) {
+            if (confirm('Are you sure you want to delete this photobook?')) {
+                $.post('api.php?action=delete_photobook', { photobook_id: id }, function (response) {
+                    if (response.success) {
+                        loadGallery();
+                    }
+                });
+            }
+        }
+
+        function saveState() {
+            history = history.slice(0, historyIndex + 1);
+            history.push($('#photo-canvas').html());
+            historyIndex++;
+        }
+
+        function undo() {
+            if (historyIndex > 0) {
+                historyIndex--;
+                $('#photo-canvas').html(history[historyIndex]);
+            }
+        }
+
+        function redo() {
+            if (historyIndex < history.length - 1) {
+                historyIndex++;
+                $('#photo-canvas').html(history[historyIndex]);
+            }
+        }
+    </script>
+</body>
+
+</html>
